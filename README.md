@@ -18,22 +18,24 @@ Meter error is one of the main contributing factors to unexpected fuel losses or
 │   ├── Simulated
 │   │    ├── 05
 │   │    │    ├── 05.csv             # contain the simulated error rate (avg error rate is 0.5%) and the date of meter error occurrance 
-│   │    │    ├── 05Simulated.npz    # contain the simulated meter data and no meter error data, contain training data in the format of windows of 100, and test data
+│   │    │    ├── 05_simulated.npz    # contain the simulated meter data and no meter error data, contain training data in the format of windows of 100, and test data
 │   │    ├── 10
 │   │    │    ├── 10.csv 
-│   │    │    ├── 10Simulated.npz    
+│   │    │    ├── 10_simulated.npz    
 │   │    ├── 15
 │   │    │    ├── 15.csv 
-│   │    │    ├── 15Simulated.npz    
+│   │    │    ├── 15_simulated.npz    
 │   │    ├── 20
 │   │    │    ├── 20.csv 
-│   │    │    ├── 20Simulated.npz    
+│   │    │    ├── 20_simulated.npz    
 │   │    ├── 25
 │   │    │    ├── 25.csv 
-│   │    │    ├── 25Simulated.npz    
+│   │    │    ├── 25_simulated.npz    
 │   │    ├── train.npz              # contain train data (not divided into windows)
+│   │    ├── wnds_train.npz         # contain train data (that has been divided into windows)
 ```
-
+The full simulated and real-world meter error data can be downloaded here.
+- [Google Drive](https://drive.google.com/drive/folders/1vO9BUl8RYKkQcZGYXeZM3_lnDR-DRMqa?usp=share_link)
 
 ## Main Usage
 For running experiments using the simulated data and train a LSTM-VAE model for meter error data, you can  run `main.py`. For evaluating the performance of the framework with the trained LSTM-VAE model on real-world meter error data, you can run `real_ME.py`.

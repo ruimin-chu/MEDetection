@@ -10,9 +10,6 @@ from models.LSTMVAE import LSTM_VAE
 from utils.utils import update_roc, generate_gt_margin, generate_results
 import pickle
 
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-os.environ['HDF5_DISABLE_VERSION_CHECK'] = '2'
-
 parser = argparse.ArgumentParser(description='Meter error detection')
 parser.add_argument('--noise', type=float, default=0, help='Gaussian noise for LSTM-VAE training')
 parser.add_argument('--wnd_dim', type=int, default=100, help='window size')
@@ -30,7 +27,7 @@ parser.add_argument('--test', type=bool, default=False, help='test mode')
 parser.add_argument('--result_path', type=str, default='15IQRMED11WND100', help='result.pkl')
 args = parser.parse_args()
 
-if __name__ == '__main__':
+def main():
     RATES = ['05', '10', '15', '20', '25']
     ERROR_MARGIN = 50
     THRESHOLDS = np.array(
@@ -43,8 +40,9 @@ if __name__ == '__main__':
     for error_rate in RATES:
         info_path = 'data/simulated/' + error_rate + '/' + error_rate + '.csv'
         data_info = pd.read_csv(info_path)
-        data_path = 'data/simulated/' + error_rate + '/' + error_rate + 'Simulated.npz'
+        data_path = 'data/simulated/' + error_rate + '/' + error_rate + '_simulated.npz'
         Data = np.load(data_path, allow_pickle=True)
+        train_data = np.load('data/simulated/wnds_train.npz', allow_pickle=True)
 
         model = LSTM_VAE(timestep, args.sub_dim, args.lstm_dim, args.activation, args.latent_dim, 0.2, 0,
                          args.kl_weight)
@@ -52,7 +50,7 @@ if __name__ == '__main__':
 
         # training phase
         if not args.test and not trained:
-            X_p, X_f = Data['Train_L'], Data['Train_R']
+            X_p, X_f = train_data['Train_L'], train_data['Train_R']
             X_p = np.array(X_p)
             X_p_noisy = X_p
             noise = np.random.normal(0, args.noise, size=(X_p.shape[0], X_p.shape[1], X_p.shape[2]))
@@ -134,3 +132,6 @@ if __name__ == '__main__':
         pred_result = open(result_path, 'wb')
         pickle.dump(results, pred_result)
         pred_result.close()
+
+if __name__ == '__main__':
+    main()

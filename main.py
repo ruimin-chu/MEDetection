@@ -41,8 +41,7 @@ def main():
         info_path = 'data/simulated/' + error_rate + '/' + error_rate + '.csv'
         data_info = pd.read_csv(info_path)
         data_path = 'data/simulated/' + error_rate + '/' + error_rate + '_simulated.npz'
-        Data = np.load(data_path, allow_pickle=True)
-        train_data = np.load('data/simulated/wnds_train.npz', allow_pickle=True)
+        Data = np.load(data_path, allow_pickle=True)        
 
         model = LSTM_VAE(timestep, args.sub_dim, args.lstm_dim, args.activation, args.latent_dim, 0.2, 0,
                          args.kl_weight)
@@ -50,6 +49,7 @@ def main():
 
         # training phase
         if not args.test and not trained:
+            train_data = np.load('data/simulated/wnds_train.npz', allow_pickle=True)
             X_p, X_f = train_data['Train_L'], train_data['Train_R']
             X_p = np.array(X_p)
             X_p_noisy = X_p
